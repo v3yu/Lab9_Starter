@@ -84,9 +84,17 @@
       <button>End Timer</button>
       <button>Console Trace</button>
       <button>Trigger a Global Error</button>
+      <button>Try/Catch Demo</button>
     </section>
   </main>
-
+<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<script>
+  window.TrackJS && TrackJS.install({ 
+    token: "eefa786649024b4e912862c22bff5e0a"
+    // for more configuration options, see https://docs.trackjs.com
+    
+  });
+</script>
   <script>
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
@@ -102,6 +110,129 @@
 
     // Start your code here
     // You may move this JS to another file if you wish
+    const sampleObj = { name: "Xiao", age: 2000, city: "Liyue" };
+const sampleArr = [
+  { name: "Aether", age: 3000 },
+  { name: "Lumine", age: 3000 }
+];
+
+let timerStarted = false;
+
+errorBtns[0].addEventListener('click', () => {
+  console.log("This is a console.log demo", sampleObj);
+});
+
+errorBtns[1].addEventListener('click', () => {
+  console.error("This is a console.error demo", sampleObj);
+});
+
+errorBtns[2].addEventListener('click', () => {
+  console.count("Console count button clicked");
+});
+
+errorBtns[3].addEventListener('click', () => {
+  console.warn("This is a console.warn demo", sampleObj);
+});
+
+errorBtns[4].addEventListener('click', () => {
+  console.assert(false, "This is a console.assert demo");
+  console.assert(true, "This assert will not show.");
+});
+
+errorBtns[5].addEventListener('click', () => {
+  console.clear();
+});
+
+errorBtns[6].addEventListener('click', () => {
+  console.dir(sampleObj);
+});
+
+errorBtns[7].addEventListener('click', () => {
+  console.dirxml(document.body);
+});
+
+let groupStarted = false;
+errorBtns[8].addEventListener('click', () => {
+  if (!groupStarted) {
+    console.group("Demo Group");
+    console.log("Inside group");
+    groupStarted = true;
+  } else {
+    console.log("Group already started. End it before starting again.");
+  }
+});
+
+errorBtns[9].addEventListener('click', () => {
+  if (groupStarted) {
+    console.groupEnd();
+    groupStarted = false;
+  } else {
+    console.log("No group to end.");
+  }
+});
+
+errorBtns[10].addEventListener('click', () => {
+  console.table(sampleArr);
+});
+
+errorBtns[11].addEventListener('click', () => {
+  if (!timerStarted) {
+    console.time("Demo Timer");
+    timerStarted = true;
+  } else {
+    console.log("Timer already started.");
+  }
+});
+
+errorBtns[12].addEventListener('click', () => {
+  if (timerStarted) {
+    console.timeEnd("Demo Timer");
+    timerStarted = false;
+  } else {
+    console.log("No timer to end.");
+  }
+});
+
+errorBtns[13].addEventListener('click', () => {
+  function traceDemo() {
+    console.trace("This is a console.trace demo");
+  }
+  traceDemo();
+});
+class MissingNodeError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "MissingNodeError";
+  }
+}
+errorBtns[14].addEventListener('click', () => {
+  try {
+    nonExistentFunction();
+  } catch (err) {
+    console.log("A global error was triggered and caught.");
+  }
+});
+
+errorBtns[15].addEventListener('click', () => {
+  try {
+    // Try to access a DOM node that does not exist
+    let missingNode = document.querySelector('#non-existent-node');
+    if (!missingNode) {
+      // Throw a custom error
+      throw new MissingNodeError("Custom Error: The node #non-existent-node does not exist");
+    }
+    // If it exists, do something with it
+    console.log(missingNode.textContent);
+  } catch (err) {
+    if (err instanceof MissingNodeError) {
+      console.error("Caught a custom error:", err);
+    } else {
+      console.error("Caught a general error:", err);
+    }
+  } finally {
+    console.log("Finally block executed in try/catch demo.");
+  }
+});
   </script>
 </body>
 
